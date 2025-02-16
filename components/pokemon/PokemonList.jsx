@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { styles } from './stylesL';
-import { lightenColor } from './colorUtils';
+import { lightenColor, darkenColor } from './colorUtils';
 import { getTypeIcon } from './typeIcons';
 
 const ITEMS_PER_PAGE = 50;
@@ -146,8 +146,10 @@ export default function PokemonList() {
     const baseColor = getTypeColor(primaryType);
     // Create a lighter version of the type color
     const cardBackground = lightenColor(baseColor, 0.3);
+    const darkTypeColor = darkenColor(baseColor, 0.3);
     // Get the PNG icon for the primary type
     const typeIcon = getTypeIcon(primaryType);
+    
     
     return (
       <TouchableOpacity 
@@ -167,7 +169,7 @@ export default function PokemonList() {
           {typeIcon && (
             <Image
               source={typeIcon}
-              style={styles.typeIcon}
+              style={[styles.typeIcon, { tintColor: darkTypeColor }]}
             />
           )}
           <View style={styles.typeContainer}>
@@ -209,7 +211,7 @@ export default function PokemonList() {
     <View style={styles.container}>
       <TextInput
         style={styles.searchInput}
-        placeholder="Search Pokémon by name or number"
+        placeholder="Search Pokémon"
         value={searchQuery}
         onChangeText={setSearchQuery}
         onSubmitEditing={handleSearch}  // Add this to handle enter/submit

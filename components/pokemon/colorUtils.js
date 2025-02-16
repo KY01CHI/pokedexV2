@@ -1,18 +1,18 @@
-export const lightenColor = (hex, amount = 0.3) => {
+export const darkenColor = (hex, amount = 0.2) => {
     let usePound = false;
     if (hex[0] === "#") {
       hex = hex.slice(1);
       usePound = true;
     }
     const num = parseInt(hex, 16);
-    let r = (num >> 16) + Math.round(255 * amount);
-    let g = ((num >> 8) & 0x00FF) + Math.round(255 * amount);
-    let b = (num & 0x0000FF) + Math.round(255 * amount);
-    r = r > 255 ? 255 : r;
-    g = g > 255 ? 255 : g;
-    b = b > 255 ? 255 : b;
+    let r = (num >> 16) - Math.round(255 * amount);
+    let g = ((num >> 8) & 0x00FF) - Math.round(255 * amount);
+    let b = (num & 0x0000FF) - Math.round(255 * amount);
+    r = Math.max(0, Math.min(255, r));
+    g = Math.max(0, Math.min(255, g));
+    b = Math.max(0, Math.min(255, b));
     const newColor = (r << 16) | (g << 8) | b;
-    return (usePound ? "#" : "") + newColor.toString(16).padStart(6, '0');
+    return (usePound ? "#" : "") + newColor.toString(16).padStart(6, "0");
   };
   
   export const getTypeColor = (type) => {
@@ -38,3 +38,21 @@ export const lightenColor = (hex, amount = 0.3) => {
     };
     return colors[type] || '#777777';
   };
+  
+  export const lightenColor = (hex, amount = 0.3) => {
+    let usePound = false;
+    if (hex[0] === "#") {
+      hex = hex.slice(1);
+      usePound = true;
+    }
+    const num = parseInt(hex, 16);
+    let r = (num >> 16) + Math.round(255 * amount);
+    let g = ((num >> 8) & 0x00FF) + Math.round(255 * amount);
+    let b = (num & 0x0000FF) + Math.round(255 * amount);
+    r = r > 255 ? 255 : r;
+    g = g > 255 ? 255 : g;
+    b = b > 255 ? 255 : b;
+    const newColor = (r << 16) | (g << 8) | b;
+    return (usePound ? "#" : "") + newColor.toString(16).padStart(6, '0');
+  };
+  

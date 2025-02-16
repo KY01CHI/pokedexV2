@@ -15,6 +15,9 @@ import { Ionicons } from '@expo/vector-icons';
 import styles from './stylesD';
 import MoveColor from './MoveColor'
 import StatBar from './StatBar';
+import { getTypeIcon } from './typeIcons';
+import { darkenColor } from './colorUtils';
+
 
 const { width } = Dimensions.get('window');
 
@@ -330,12 +333,22 @@ export default function PokemonDetail() {
       </View>
       
       <View style={styles.imageContainer} pointerEvents="none">
-        <Image
-          source={{ uri: pokemon.sprites.other['official-artwork'].front_default }}
-          style={styles.pokemonImage}
-          resizeMode="contain"
-        />
+          {getTypeIcon(mainType) && (
+            <Image
+              source={getTypeIcon(mainType)}
+              style={[
+                styles.detailTypeIcon,
+                { tintColor: darkenColor(typeColor, 0.3) }
+              ]}
+            />
+          )}
+          <Image
+            source={{ uri: pokemon.sprites.other['official-artwork'].front_default }}
+            style={styles.pokemonImage}
+            resizeMode="contain"
+          />
       </View>
+
       
       <View style={styles.contentContainer}>
         <View style={styles.typesContainer}>

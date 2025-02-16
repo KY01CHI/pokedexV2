@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 12,
-  paddingHorizontal: 16,
+    paddingHorizontal: 16,
   },
   statName: {
     width: 65,
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     width: 35,
     fontSize: 14,
     textAlign: 'right',
-    marginRight: 8
+    marginRight: 8,
   },
   statBarContainer: {
     flex: 1,
@@ -183,20 +183,17 @@ const styles = StyleSheet.create({
   scrollContainer: {
     paddingBottom: 50,
   },
-
   tabContent: {
     flex: 1,
     paddingVertical: 30,
   },
-  
   // Location tab styles
   locationTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 0, 
+    marginBottom: 0,
     color: '#333',
   },
-  
   locationItem: {
     padding: 15,
     backgroundColor: '#f8f8f8',
@@ -208,7 +205,6 @@ const styles = StyleSheet.create({
     color: '#333',
     textTransform: 'capitalize',
   },
-  
   // Moves tab styles
   moveItem: {
     padding: 12,
@@ -226,7 +222,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
   },
-  
   // Evolution tab styles
   evolutionItem: {
     alignItems: 'center',
@@ -266,8 +261,7 @@ const styles = StyleSheet.create({
     color: '#666',
     fontStyle: 'italic',
   },
-
-  //Description styles
+  // Description styles
   descriptionContainer: {
     marginTop: 20,
     marginBottom: 20,
@@ -291,6 +285,14 @@ const styles = StyleSheet.create({
   tabContent: {
     flex: 1,
     paddingVertical: 20,
+  },
+  // New style: Icon overlay on detail card
+  detailTypeIcon: {
+    position: 'absolute',
+    right: 30, // adjust horizontal position as needed
+    bottom: 50, // adjust vertical position as needed
+    width: 200,  // adjust size as needed
+    height: 200,
   },
 });
 
