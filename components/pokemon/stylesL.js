@@ -25,6 +25,8 @@ export const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
     borderRadius: 15,
+    alignItems: 'center',
+    position: 'relative',
     padding: 10,
     marginBottom: 10,
     flexDirection: 'row',
@@ -94,5 +96,14 @@ export const styles = StyleSheet.create({
   emptyList: {
     flexGrow: 1,
     justifyContent: 'center',
+  },
+
+  //Icon styles
+  typeIcon: {
+    width: 70,    // reduced width
+    height: 70,   // reduced height
+    position: 'absolute',
+    top: 8,
+    right: 8
   },
 });

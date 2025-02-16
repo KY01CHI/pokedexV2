@@ -10,11 +10,37 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { styles } from './stylesL';
+import { lightenColor } from './colorUtils';
+import { getTypeIcon } from './typeIcons';
 
 const ITEMS_PER_PAGE = 50;
 const API_URL = 'https://pokeapi.co/api/v2/pokemon';
 
-export default function PokemonList({ navigation }) {
+const getTypeColor = (type) => {
+  const colors = {
+    normal: '#A8A878',
+    fire: '#F08030',
+    water: '#6890F0',
+    electric: '#F8D030',
+    grass: '#78C850',
+    ice: '#98D8D8',
+    fighting: '#C03028',
+    poison: '#A040A0',
+    ground: '#E0C068',
+    flying: '#A890F0',
+    psychic: '#F85888',
+    bug: '#A8B820',
+    rock: '#B8A038',
+    ghost: '#705898',
+    dragon: '#7038F8',
+    dark: '#705848',
+    steel: '#B8B8D0',
+    fairy: '#EE99AC',
+  };
+  return colors[type] || '#777777';
+};
+
+export default function PokemonList() {
   const [displayedPokemon, setDisplayedPokemon] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -114,34 +140,52 @@ export default function PokemonList({ navigation }) {
     fetchPokemon(searchQuery);
   };
 
-  const renderPokemonCard = ({ item }) => (
-    <TouchableOpacity 
-      style={styles.card}
-      onPress={() => router.push(`/${item.id}`)}
-    >
-      <Image
-        source={{ uri: item.image }}
-        style={styles.pokemonImage}
-      />
-      <View style={styles.pokemonInfo}>
-        <Text style={styles.pokemonId}>#{item.id.toString().padStart(3, '0')}</Text>
-        <Text style={styles.pokemonName}>
-          {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
-        </Text>
-        <View style={styles.typeContainer}>
-          {item.types.map((type, index) => (
-            <View 
-              key={index} 
-              style={[styles.typeBox, { backgroundColor: getTypeColor(type) }]}
-            >
-              <Text style={styles.typeText}>{type}</Text>
-            </View>
-          ))}
+  const renderPokemonCard = ({ item }) => {
+    // Use the first type as the primary type
+    const primaryType = item.types[0];
+    const baseColor = getTypeColor(primaryType);
+    // Create a lighter version of the type color
+    const cardBackground = lightenColor(baseColor, 0.3);
+    // Get the PNG icon for the primary type
+    const typeIcon = getTypeIcon(primaryType);
+    
+    return (
+      <TouchableOpacity 
+        style={[styles.card, { backgroundColor: cardBackground }]}
+        onPress={() => router.push(`/${item.id}`)}
+      >
+        <Image
+          source={{ uri: item.image }}
+          style={styles.pokemonImage}
+        />
+        <View style={styles.pokemonInfo}>
+          <Text style={styles.pokemonId}>#{item.id.toString().padStart(3, '0')}</Text>
+          <Text style={styles.pokemonName}>
+            {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+          </Text>
+          {/* Place the type icon on the right */}
+          {typeIcon && (
+            <Image
+              source={typeIcon}
+              style={styles.typeIcon}
+            />
+          )}
+          <View style={styles.typeContainer}>
+            {item.types.map((type, index) => (
+              <View 
+                key={index} 
+                style={[styles.typeBox, { backgroundColor: getTypeColor(type) }]}
+              >
+                <Text style={styles.typeText}>{type}</Text>
+              </View>
+            ))}
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
-
+      </TouchableOpacity>
+    );
+  };
+  
+  
   const ListFooterComponent = useCallback(() => {
     if (!loadingMore) return null;
     return (
@@ -192,26 +236,3 @@ export default function PokemonList({ navigation }) {
   );
 }
 
-const getTypeColor = (type) => {
-  const colors = {
-    normal: '#A8A878',
-    fire: '#F08030',
-    water: '#6890F0',
-    electric: '#F8D030',
-    grass: '#78C850',
-    ice: '#98D8D8',
-    fighting: '#C03028',
-    poison: '#A040A0',
-    ground: '#E0C068',
-    flying: '#A890F0',
-    psychic: '#F85888',
-    bug: '#A8B820',
-    rock: '#B8A038',
-    ghost: '#705898',
-    dragon: '#7038F8',
-    dark: '#705848',
-    steel: '#B8B8D0',
-    fairy: '#EE99AC',
-  };
-  return colors[type] || '#777777';
-};

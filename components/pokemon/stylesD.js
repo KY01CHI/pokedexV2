@@ -120,20 +120,22 @@ const styles = StyleSheet.create({
   statRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 12,
+  paddingHorizontal: 16,
   },
   statName: {
-    width: 45,
-    fontSize: 14,
+    width: 65,
+    fontSize: 12,
     color: '#666',
     textAlign: 'right',
-    marginRight: 10,
+    marginRight: 8,
+    fontWeight: '600',
   },
   statValue: {
     width: 35,
     fontSize: 14,
-    marginRight: 10,
     textAlign: 'right',
+    marginRight: 8
   },
   statBarContainer: {
     flex: 1,
@@ -148,6 +150,147 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     height: 40,
+  },
+  tabsContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  tabButton: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    marginHorizontal: 2,
+    borderRadius: 20,
+  },
+  activeTabButton: {
+    backgroundColor: '#f0f0f0',
+  },
+  tabButtonText: {
+    fontSize: 14,
+    color: '#666',
+    fontWeight: '500',
+  },
+  activeTabButtonText: {
+    color: '#333',
+    fontWeight: 'bold',
+  },
+  tabContentContainer: {
+    flex: 1,
+    paddingHorizontal: 20,
+  },
+  scrollContainer: {
+    paddingBottom: 50,
+  },
+
+  tabContent: {
+    flex: 1,
+    paddingVertical: 30,
+  },
+  
+  // Location tab styles
+  locationTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 0, 
+    color: '#333',
+  },
+  
+  locationItem: {
+    padding: 15,
+    backgroundColor: '#f8f8f8',
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  locationName: {
+    fontSize: 16,
+    color: '#333',
+    textTransform: 'capitalize',
+  },
+  
+  // Moves tab styles
+  moveItem: {
+    padding: 12,
+    backgroundColor: '#f8f8f8',
+    borderRadius: 10,
+    marginHorizontal: 16,
+    marginBottom: 8,
+  },
+  moveName: {
+    fontSize: 16,
+    color: '#333',
+    textTransform: 'capitalize',
+  },
+  moveLevel: {
+    fontSize: 16,
+    color: '#333',
+  },
+  
+  // Evolution tab styles
+  evolutionItem: {
+    alignItems: 'center',
+    marginHorizontal: 10,
+  },
+  evolutionPokemon: {
+    alignItems: 'center',
+  },
+  evolutionImage: {
+    width: 140,
+    height: 140,
+  },
+  evolutionName: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginTop: 8,
+    textTransform: 'capitalize',
+  },
+  evolutionArrowContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginHorizontal: 10,
+  },
+  evolutionDetails: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    gap: 10,
+  },
+  evolutionLevel: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 4,
+  },
+  evolutionTrigger: {
+    fontSize: 14,
+    color: '#666',
+    fontStyle: 'italic',
+  },
+
+  //Description styles
+  descriptionContainer: {
+    marginTop: 20,
+    marginBottom: 20,
+    paddingHorizontal: 16,
+  },
+  descriptionTextContainer: {
+    width: '100%',
+  },
+  sectionHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#333',
+  },
+  description: {
+    fontSize: 14,
+    color: '#555',
+    lineHeight: 20,
+    textAlign: 'left',
+  },
+  tabContent: {
+    flex: 1,
+    paddingVertical: 20,
   },
 });
 
