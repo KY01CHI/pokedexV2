@@ -17,6 +17,8 @@ import MoveColor from './MoveColor'
 import StatBar from './StatBar';
 import { getTypeIcon } from './typeIcons';
 import { darkenColor } from './colorUtils';
+import LoadingSpinner from './LoadingSpinner';
+
 
 
 const { width } = Dimensions.get('window');
@@ -307,7 +309,7 @@ export default function PokemonDetail() {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#78C850" />
+        <LoadingSpinner size={100} color1="#78C850" color2="#8CD670" color3="#A0E490" />
       </View>
     );
   }
@@ -351,21 +353,26 @@ export default function PokemonDetail() {
 
       
       <View style={styles.contentContainer}>
-        <View style={styles.typesContainer}>
-          {pokemon.types.map((type) => (
-            <View
-              key={type.type.name}
-              style={[
-                styles.typeTag,
-                { backgroundColor: getTypeColor(type.type.name) },
-              ]}
-            >
-              <Text style={styles.typeText}>
-                {type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)}
-              </Text>
-            </View>
-          ))}
-        </View>
+      <View style={styles.typesContainer}>
+  {pokemon.types.map((type) => (
+    <View
+      key={type.type.name}
+      style={[
+        styles.typeTag,
+        { backgroundColor: getTypeColor(type.type.name) },
+      ]}
+    >
+      <Image
+        source={getTypeIcon(type.type.name)}
+        style={[styles.typeIcon, { tintColor: '#FFFFFF' }]}
+      />
+      <Text style={styles.typeText}>
+        {type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)}
+      </Text>
+    </View>
+  ))}
+</View>
+
         
         <PokemonTabs
             activeTab={activeTab}

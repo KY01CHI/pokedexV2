@@ -74,6 +74,7 @@ export const styles = StyleSheet.create({
   typeText: {
     color: 'white',
     fontWeight: 'bold',
+    fontSize: 12
   },
 
   loadingFooter: {

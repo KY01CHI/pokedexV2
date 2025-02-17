@@ -294,6 +294,32 @@ const styles = StyleSheet.create({
     width: 200,  // adjust size as needed
     height: 200,
   },
+
+  //Icon Style
+  typeIcon: {
+    width: 15,
+    height: 15,
+    marginRight: 4,
+  },
+  typeContainer: {
+    flexDirection: 'row',
+    gap: 5,
+    marginTop: 5,
+  },
+  typeBox: {
+    flexDirection:'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 20,
+    marginRight: 5,
+    gap: 4,
+  },
+  typeText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 12
+  },
 });
 
 export default styles;

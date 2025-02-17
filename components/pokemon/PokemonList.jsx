@@ -13,6 +13,7 @@ import { styles } from './stylesL';
 import { lightenColor, darkenColor } from './colorUtils';
 import { getTypeIcon } from './typeIcons';
 import SearchBar from './SearchBar';
+import LoadingSpinner from './LoadingSpinner';
 
 const ITEMS_PER_PAGE = 50;
 const API_URL = 'https://pokeapi.co/api/v2/pokemon';
@@ -185,12 +186,11 @@ export default function PokemonList() {
     );
   };
   
-  
   const ListFooterComponent = useCallback(() => {
     if (!loadingMore) return null;
     return (
       <View style={styles.loadingFooter}>
-        <ActivityIndicator size="large" color="#E63F34" />
+        <LoadingSpinner size={50} color1="#E63F34" color2="#FF5252" color3="#FF7B7B" />
       </View>
     );
   }, [loadingMore]);
@@ -200,7 +200,7 @@ export default function PokemonList() {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#E63F34" />
+        <LoadingSpinner size={100} color1="#E63F34" color2="#FF5252" color3="#FF7B7B" />
       </View>
     );
   }
