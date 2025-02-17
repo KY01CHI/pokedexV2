@@ -16,36 +16,11 @@ import styles from './stylesD';
 import MoveColor from './MoveColor'
 import StatBar from './StatBar';
 import { getTypeIcon } from './typeIcons';
-import { darkenColor } from './colorUtils';
+import { darkenColor, lightenColor, getTypeColor } from './colorUtils';
 import LoadingSpinner from './LoadingSpinner';
-
-
 
 const { width } = Dimensions.get('window');
 
-const getTypeColor = (type) => {
-  const colors = {
-    normal: '#A8A878',
-    fire: '#F08030',
-    water: '#6890F0',
-    electric: '#F8D030',
-    grass: '#78C850',
-    ice: '#98D8D8',
-    fighting: '#C03028',
-    poison: '#A040A0',
-    ground: '#E0C068',
-    flying: '#A890F0',
-    psychic: '#F85888',
-    bug: '#A8B820',
-    rock: '#B8A038',
-    ghost: '#705898',
-    dragon: '#7038F8',
-    dark: '#705848',
-    steel: '#B8B8D0',
-    fairy: '#EE99AC',
-  };
-  return colors[type] || '#777777';
-};
 
 export default function PokemonDetail() {
   const [pokemon, setPokemon] = useState(null);
@@ -256,8 +231,6 @@ export default function PokemonDetail() {
     </ScrollView>
   );
   
-  
-
   const renderLocationTab = () => (
     <View style={styles.tabContent}>
       {locationAreas.length > 0 ? (
@@ -318,6 +291,7 @@ export default function PokemonDetail() {
 
   const mainType = pokemon.types[0].type.name;
   const typeColor = getTypeColor(mainType);
+  const typeColorDark = getTypeColor(mainType, 'darken', 0.2);
   const formattedId = String(pokemon.id).padStart(3, '0');
 
   return (
@@ -353,27 +327,26 @@ export default function PokemonDetail() {
 
       
       <View style={styles.contentContainer}>
-      <View style={styles.typesContainer}>
-  {pokemon.types.map((type) => (
-    <View
-      key={type.type.name}
-      style={[
-        styles.typeTag,
-        { backgroundColor: getTypeColor(type.type.name) },
-      ]}
-    >
-      <Image
-        source={getTypeIcon(type.type.name)}
-        style={[styles.typeIcon, { tintColor: '#FFFFFF' }]}
-      />
-      <Text style={styles.typeText}>
-        {type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)}
-      </Text>
-    </View>
-  ))}
-</View>
+          <View style={styles.typesContainer}>
+            {pokemon.types.map((type) => (
+              <View
+                key={type.type.name}
+                style={[
+                  styles.typeTag,
+                  { backgroundColor: getTypeColor(type.type.name), flexDirection: 'row', alignItems: 'center' },
+                ]}
+              >
+                <Image
+                  source={getTypeIcon(type.type.name)}
+                  style={[styles.typeIcon, { tintColor: '#FFFFFF', marginRight: 5 }]}
+                />
+                <Text style={styles.typeText}>
+                  {type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)}
+                </Text>
+              </View>
+            ))}
+          </View>
 
-        
         <PokemonTabs
             activeTab={activeTab}
             setActiveTab={setActiveTab}

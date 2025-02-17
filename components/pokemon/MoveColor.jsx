@@ -1,7 +1,90 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { getTypeIcon } from './typeIcons';
+import { darkenColor } from './colorUtils';
 
-// Returns the base color for a given move type.
+function MoveColor({ moveItem, styles }) {
+  const [moveType, setMoveType] = useState(null);
+
+  useEffect(() => {
+    async function fetchMoveDetails() {
+      try {
+        const response = await fetch(moveItem.move.url);
+        const data = await response.json();
+        setMoveType(data.type.name);
+      } catch (error) {
+        console.error("Error fetching move detail:", error);
+      }
+    }
+    fetchMoveDetails();
+  }, [moveItem.move.url]);
+
+  const moveColor = moveType ? getTypeColor(moveType) : '#ccc';
+  const darkerMoveColor = moveType ? darkenColor(moveColor, 0.3) : '#999';
+
+  return (
+    <LinearGradient
+      colors={[moveColor, darkerMoveColor]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={[styles.moveItem, { padding: 10, borderRadius: 10 }]}
+    >
+      <View style={{ 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center'
+      }}>
+        <View style={{ 
+          flexDirection: 'row', 
+          alignItems: 'center', 
+          gap: 8 
+        }}>
+          {moveType && (
+            <Image
+              source={getTypeIcon(moveType)}
+              style={[styles.typeIcon, { 
+                tintColor: '#FFFFFF',
+                width: 20,
+                height: 20
+              }]}
+            />
+          )}
+          <Text style={[styles.moveName, { 
+            color: 'white', 
+            fontWeight: 'bold',
+            fontSize: 16,
+            textShadowColor: 'rgba(0, 0, 0, 0.2)',
+            textShadowOffset: { width: 1, height: 1 },
+            textShadowRadius: 3
+          }]}>
+            {moveItem.move.name.replace(/-/g, ' ')}
+          </Text>
+        </View>
+        {moveItem.learnLevel > 0 && (
+          <View style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            paddingHorizontal: 8,
+            paddingVertical: 4,
+            borderRadius: 12
+          }}>
+            <Text style={[styles.moveLevel, { 
+              color: 'white', 
+              fontWeight: 'bold',
+              fontSize: 14,
+              textShadowColor: 'rgba(0, 0, 0, 0.2)',
+              textShadowOffset: { width: 1, height: 1 },
+              textShadowRadius: 3
+            }]}>
+              Level {moveItem.learnLevel}
+            </Text>
+          </View>
+        )}
+      </View>
+    </LinearGradient>
+  );
+}
+
 const getTypeColor = (type) => {
   const colors = {
     normal: '#A8A878',
@@ -23,61 +106,7 @@ const getTypeColor = (type) => {
     steel: '#B8B8D0',
     fairy: '#EE99AC',
   };
-  return colors[type] || '#ccc';
+  return colors[type] || '#777777';
 };
-
-// Lightens a hex color by a given amount (amount: 0 to 1)
-const lightenColor = (hex, amount) => {
-  let usePound = false;
-  if (hex[0] === "#") {
-    hex = hex.slice(1);
-    usePound = true;
-  }
-  const num = parseInt(hex, 16);
-  let r = (num >> 16) + Math.round(255 * amount);
-  let g = ((num >> 8) & 0x00FF) + Math.round(255 * amount);
-  let b = (num & 0x0000FF) + Math.round(255 * amount);
-  r = r > 255 ? 255 : r;
-  g = g > 255 ? 255 : g;
-  b = b > 255 ? 255 : b;
-  const newColor = (r << 16) | (g << 8) | b;
-  return (usePound ? "#" : "") + newColor.toString(16).padStart(6, '0');
-};
-
-function MoveColor({ moveItem, styles }) {
-  const [moveType, setMoveType] = useState(null);
-
-  useEffect(() => {
-    async function fetchMoveDetails() {
-      try {
-        const response = await fetch(moveItem.move.url);
-        const data = await response.json();
-        setMoveType(data.type.name);
-      } catch (error) {
-        console.error("Error fetching move detail:", error);
-      }
-    }
-    fetchMoveDetails();
-  }, [moveItem.move.url]);
-
-  const moveColor = moveType ? getTypeColor(moveType) : '#ccc';
-  // Lighten the color by 30%
-  const lightMoveColor = lightenColor(moveColor, 0.3);
-
-  return (
-    <View style={[styles.moveItem, { backgroundColor: lightMoveColor, padding: 10 }]}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Text style={styles.moveName}>
-          {moveItem.move.name.replace(/-/g, ' ')}
-        </Text>
-        {moveItem.learnLevel > 0 && (
-          <Text style={[styles.moveLevel, { fontWeight: 'bold' }]}>
-            Level {moveItem.learnLevel}
-          </Text>
-        )}
-      </View>
-    </View>
-  );
-}
 
 export default MoveColor;

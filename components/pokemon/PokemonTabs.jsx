@@ -81,7 +81,7 @@ export default function PokemonTabs({
           >
             <Text style={[
               styles.tabText,
-              activeTab === index && styles.activeTabText
+              activeTab === index && [styles.activeTabText, { color: typeColor }]
             ]}>
               {tab.label}
             </Text>
@@ -148,7 +148,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   activeTabText: {
-    color: '#333333',
     fontWeight: '700',
   },
   indicator: {
