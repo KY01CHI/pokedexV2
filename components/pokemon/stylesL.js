@@ -22,61 +22,7 @@ export const styles = StyleSheet.create({
   list: {
     padding: 10,
   },
-  card: {
-    backgroundColor: 'white',
-    borderRadius: 15,
-    alignItems: 'center',
-    position: 'relative',
-    padding: 10,
-    marginBottom: 10,
-    flexDirection: 'row',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  pokemonImage: {
-    width: 100,
-    height: 100,
-    marginRight: 10,
-  },
-  pokemonInfo: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  pokemonId: {
-    fontSize: 14,
-    color: '#0000000',
-  },
-  pokemonName: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginVertical: 5,
-  },
-  typeContainer: {
-    flexDirection: 'row',
-    gap: 5,
-    marginTop: 5,
-  },
-  typeBox: {
-    flexDirection:'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 20,
-    marginRight: 5,
-    gap: 4,
-  },
-  typeText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 12
-  },
-
+  
   loadingFooter: {
     padding: 20,
     alignItems: 'center',
@@ -102,11 +48,5 @@ export const styles = StyleSheet.create({
   emptyList: {
     flexGrow: 1,
     justifyContent: 'flex-start',
-  },
-
-  //Icon styles
-  typeIcon: {
-    width: 15,    // reduced width
-    height: 15,   // reduced height
   },
 });

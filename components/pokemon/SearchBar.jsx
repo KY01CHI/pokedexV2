@@ -15,7 +15,7 @@ const SearchBar = ({ searchQuery, setSearchQuery, handleSearch, hasResults }) =>
 
   return (
     <View style={styles.outerContainer}>
-      <Text style={styles.title}>Who are you looking for?</Text>
+      <Text style={styles.title}>Find your Pokémon</Text>
       <View style={[styles.searchWrapper, { borderColor: getBorderColor(), borderWidth: 1 }]}>
         <TextInput
           style={styles.input}
@@ -67,6 +67,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 20,     // Add this line
+    margin: 4,  
   },
   goButtonText: {
     color: 'white',

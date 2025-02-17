@@ -16,8 +16,9 @@ import styles from './stylesD';
 import MoveColor from './MoveColor'
 import StatBar from './StatBar';
 import { getTypeIcon } from './typeIcons';
-import { darkenColor, lightenColor, getTypeColor } from './colorUtils';
+import { darkenColor, getTypeColor } from './colorUtils';
 import LoadingSpinner from './LoadingSpinner';
+import EvolutionDetails from './EvolutionDetails';
 
 const { width } = Dimensions.get('window');
 
@@ -87,15 +88,13 @@ export default function PokemonDetail() {
         id: pokemonId,
         name: pokemon.name,
         image: pokemon.sprites.other['official-artwork'].front_default,
-        min_level: pokemonData.evolution_details[0]?.min_level || null,
-        trigger: pokemonData.evolution_details[0]?.trigger?.name || null,
-        item: pokemonData.evolution_details[0]?.item?.name || null,
+        evolution_details: pokemonData.evolution_details[0] || null,
       };
     };
-
+  
     // Base form
     processedChain.push(await processPokemon({ species: chain.species, evolution_details: [{}] }));
-
+  
     // First evolution
     if (chain.evolves_to.length > 0) {
       for (const evo1 of chain.evolves_to) {
@@ -109,10 +108,55 @@ export default function PokemonDetail() {
         }
       }
     }
-
+  
     return processedChain;
   };
 
+  const renderEvolutionTab = () => (
+    <ScrollView
+      style={styles.tabContent}
+      contentContainerStyle={{ paddingVertical: 16, paddingBottom: 40 }}
+    >
+      {evolutionChain ? (
+        evolutionChain.map((evo, index) => (
+          <React.Fragment key={index}>
+            <TouchableOpacity 
+              style={styles.evolutionPokemon}
+              onPress={() => {
+                if (parseInt(evo.id) !== pokemon.id) {
+                  router.push(`/${evo.id}`);
+                }
+              }}
+            >
+              <Image
+                source={{ uri: evo.image }}
+                style={styles.evolutionImage}
+              />
+              <Text style={styles.evolutionName}>
+                {evo.name.charAt(0).toUpperCase() + evo.name.slice(1)}
+              </Text>
+              {evo.evolution_details && (
+                <EvolutionDetails 
+                  evolutionDetails={evo.evolution_details}
+                  trigger={evo.evolution_details.trigger?.name}
+                />
+              )}
+            </TouchableOpacity>
+            {index < evolutionChain.length - 1 && (
+              <View style={styles.evolutionArrowContainer}>
+                <Ionicons name="arrow-down" size={24} color="#666" />
+              </View>
+            )}
+          </React.Fragment>
+        ))
+      ) : (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#78C850" />
+        </View>
+      )}
+      <View style={{ height: 40 }} />
+    </ScrollView>
+  );
 
   const renderAboutTab = () => (
     <ScrollView style={styles.tabContent}>
@@ -184,52 +228,7 @@ export default function PokemonDetail() {
     </View>
   );
   
-
-  const renderEvolutionTab = () => (
-    <ScrollView
-      style={styles.tabContent}
-      contentContainerStyle={{ paddingVertical: 16, paddingBottom: 40 }}
-    >
-      {evolutionChain ? (
-        evolutionChain.map((evo, index) => (
-          <React.Fragment key={index}>
-            <TouchableOpacity 
-              style={styles.evolutionPokemon}
-              onPress={() => {
-                if (parseInt(evo.id) !== pokemon.id) {
-                  router.push(`/${evo.id}`);
-                }
-              }}
-            >
-              <Image
-                source={{ uri: evo.image }}
-                style={styles.evolutionImage}
-              />
-              <Text style={styles.evolutionName}>
-                {evo.name.charAt(0).toUpperCase() + evo.name.slice(1)}
-              </Text>
-              {evo.min_level && (
-                <Text style={styles.evolutionLevel}>
-                  Level {evo.min_level}
-                </Text>
-              )}
-            </TouchableOpacity>
-            {index < evolutionChain.length - 1 && (
-              <View style={styles.evolutionArrowContainer}>
-                <Ionicons name="arrow-down" size={24} color="#666" />
-              </View>
-            )}
-          </React.Fragment>
-        ))
-      ) : (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#78C850" />
-        </View>
-      )}
-      {/* Extra space at the bottom */}
-      <View style={{ height: 40 }} />
-    </ScrollView>
-  );
+  
   
   const renderLocationTab = () => (
     <View style={styles.tabContent}>
@@ -282,7 +281,11 @@ export default function PokemonDetail() {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <LoadingSpinner size={100} color1="#78C850" color2="#8CD670" color3="#A0E490" />
+        <LoadingSpinner 
+          size={100} 
+          type={pokemon?.types[0]?.type?.name || 'normal'} 
+          message="Loading Pokémon..." 
+        />
       </View>
     );
   }

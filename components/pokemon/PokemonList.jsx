@@ -2,18 +2,14 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { 
   View, 
   FlatList, 
-  Image, 
   Text, 
-  TextInput,
-  ActivityIndicator,
-  TouchableOpacity,
 } from 'react-native';
-import { router } from 'expo-router';
 import { styles } from './stylesL';
 import { lightenColor, darkenColor } from './colorUtils';
 import { getTypeIcon } from './typeIcons';
 import SearchBar from './SearchBar';
 import LoadingSpinner from './LoadingSpinner';
+import PokemonCard from './PokemonCard';
 
 const ITEMS_PER_PAGE = 50;
 const API_URL = 'https://pokeapi.co/api/v2/pokemon';
@@ -142,50 +138,16 @@ export default function PokemonList() {
     fetchPokemon(searchQuery);
   };
 
-  const renderPokemonCard = ({ item }) => {
-    // Use the first type as the primary type
-    const primaryType = item.types[0];
-    const baseColor = getTypeColor(primaryType);
-    // Create a lighter version of the type color
-    const cardBackground = lightenColor(baseColor, 0.3);
-    const darkTypeColor = darkenColor(baseColor, 0.3);
-    // Get the PNG icon for the primary type
-    const typeIcon = getTypeIcon(primaryType);
-    
-    
-    return (
-      <TouchableOpacity 
-      style={[styles.card, { backgroundColor: cardBackground }]}
-      onPress={() => router.push(`/${item.id}`)}
-    >
-      <Image
-        source={{ uri: item.image }}
-        style={styles.pokemonImage}
-      />
-      <View style={styles.pokemonInfo}>
-        <Text style={styles.pokemonId}>#{item.id.toString().padStart(3, '0')}</Text>
-        <Text style={styles.pokemonName}>
-          {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
-        </Text>
-        <View style={styles.typeContainer}>
-          {item.types.map((type, index) => (
-            <View 
-              key={index} 
-              style={[styles.typeBox, { backgroundColor: getTypeColor(type) }]}
-            >
-              <Image
-                source={getTypeIcon(type)}
-                style={[styles.typeIcon, { tintColor: '#FFFFFF' }]}
-              />
-              <Text style={styles.typeText}>{type.charAt(0).toUpperCase() + type.slice(1)}</Text>
-            </View>
-          ))}
-        </View>
-      </View>
-    </TouchableOpacity>
-    );
-  };
-  
+  // ADD THIS NEW FUNCTION
+const renderPokemonCard = ({ item }) => (
+  <PokemonCard 
+    item={item}
+    getTypeColor={getTypeColor}
+    lightenColor={lightenColor}
+    darkenColor={darkenColor}
+    getTypeIcon={getTypeIcon}
+  />
+);
   const ListFooterComponent = useCallback(() => {
     if (!loadingMore) return null;
     return (
@@ -197,13 +159,14 @@ export default function PokemonList() {
 
   const keyExtractor = useCallback((item) => item.id.toString(), []);
 
-  if (loading) {
+  useCallback(() => {
+    if (!loadingMore) return null;
     return (
-      <View style={styles.loadingContainer}>
-        <LoadingSpinner size={100} color1="#E63F34" color2="#FF5252" color3="#FF7B7B" />
+      <View style={styles.loadingFooter}>
+        <LoadingSpinner size={50} color1="#E63F34" color2="#FF5252" color3="#FF7B7B" />
       </View>
     );
-  }
+  }, [loadingMore]);
 
   return (
     <View style={styles.container}>

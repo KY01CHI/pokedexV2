@@ -1,45 +1,112 @@
-import React from 'react';
-import { View, StyleSheet, Animated, Easing } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, StyleSheet, Animated, Easing, Text } from 'react-native';
+import { getTypeColor, lightenColor } from './colorUtils';
 
-const LoadingSpinner = ({ size = 100, color1 = '#FF5252', color2 = '#FF7B7B', color3 = '#FFA4A4' }) => {
-  // Create animated values for each ring
-  const ring1Rotation = React.useRef(new Animated.Value(0)).current;
-  const ring2Rotation = React.useRef(new Animated.Value(0)).current;
-  const ring3Rotation = React.useRef(new Animated.Value(0)).current;
+const LoadingSpinner = ({ 
+  size = 100,
+  type = 'normal', // Default to normal type
+  message = 'Loading...',
+  showMessage = true,
+  pulseEffect = true,
+  rotationDuration = 1200
+}) => {
+  // Animations for rings
+  const ring1Rotation = useRef(new Animated.Value(0)).current;
+  const ring2Rotation = useRef(new Animated.Value(0)).current;
+  const ring3Rotation = useRef(new Animated.Value(0)).current;
+  
+  // Animation for pulsing effect
+  const pulseScale = useRef(new Animated.Value(1)).current;
+  
+  // Animation for loading text opacity
+  const textOpacity = useRef(new Animated.Value(0.5)).current;
 
-  React.useEffect(() => {
-    // Animation configuration
-    const createSpinAnimation = (animatedValue) => {
+  // Generate colors based on Pokemon type
+  const baseColor = getTypeColor(type);
+  const colors = [
+    baseColor,
+    lightenColor(baseColor, 0.2),
+    lightenColor(baseColor, 0.4)
+  ];
+
+  useEffect(() => {
+    // Ring rotation animations
+    const createSpinAnimation = (value) => {
       return Animated.loop(
-        Animated.timing(animatedValue, {
+        Animated.timing(value, {
           toValue: 1,
-          duration: 650, // Match the original animation duration
+          duration: rotationDuration,
           easing: Easing.linear,
           useNativeDriver: true,
         })
       );
     };
 
-    // Start animations
+    // Pulse animation
+    const createPulseAnimation = () => {
+      return Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseScale, {
+            toValue: 1.1,
+            duration: 1000,
+            easing: Easing.bezier(0.4, 0, 0.2, 1),
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseScale, {
+            toValue: 1,
+            duration: 1000,
+            easing: Easing.bezier(0.4, 0, 0.2, 1),
+            useNativeDriver: true,
+          }),
+        ])
+      );
+    };
+
+    // Text fade animation
+    const createTextAnimation = () => {
+      return Animated.loop(
+        Animated.sequence([
+          Animated.timing(textOpacity, {
+            toValue: 1,
+            duration: 1000,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: true,
+          }),
+          Animated.timing(textOpacity, {
+            toValue: 0.5,
+            duration: 1000,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: true,
+          }),
+        ])
+      );
+    };
+
+    // Start all animations
     const animations = [
       createSpinAnimation(ring1Rotation),
       createSpinAnimation(ring2Rotation),
       createSpinAnimation(ring3Rotation),
     ];
 
+    if (pulseEffect) {
+      animations.push(createPulseAnimation());
+    }
+
+    if (showMessage) {
+      animations.push(createTextAnimation());
+    }
+
     animations.forEach(animation => animation.start());
 
     // Cleanup
-    return () => {
-      animations.forEach(animation => animation.stop());
-    };
-  }, []);
+    return () => animations.forEach(animation => animation.stop());
+  }, [pulseEffect, showMessage]);
 
-  // Create interpolated rotations
-  const getRotationStyle = (animatedValue) => ({
+  const getRotationStyle = (value) => ({
     transform: [
       {
-        rotate: animatedValue.interpolate({
+        rotate: value.interpolate({
           inputRange: [0, 1],
           outputRange: ['0deg', '360deg'],
         }),
@@ -48,59 +115,88 @@ const LoadingSpinner = ({ size = 100, color1 = '#FF5252', color2 = '#FF7B7B', co
   });
 
   return (
-    <View style={[styles.container, { width: size, height: size }]}>
-      <Animated.View style={[
-        styles.ring,
-        { 
-          width: size,
-          height: size,
-          borderColor: color1,
-          borderLeftWidth: 4,
-          borderRightWidth: 4,
-          borderTopWidth: 4,
-        },
-        getRotationStyle(ring1Rotation)
-      ]} />
-      
-      <Animated.View style={[
-        styles.ring,
-        {
-          width: size - 15,
-          height: size - 15,
-          borderColor: color2,
-          borderLeftWidth: 4,
-          borderRightWidth: 4,
-          borderBottomWidth: 4,
-        },
-        getRotationStyle(ring2Rotation)
-      ]} />
-      
-      <Animated.View style={[
-        styles.ring,
-        {
-          width: size - 30,
-          height: size - 30,
-          borderColor: color3,
-          borderLeftWidth: 4,
-          borderRightWidth: 4,
-          borderTopWidth: 4,
-        },
-        getRotationStyle(ring3Rotation)
-      ]} />
+    <View style={styles.container}>
+      <Animated.View 
+        style={[
+          styles.spinnerContainer, 
+          { width: size, height: size },
+          pulseEffect && { transform: [{ scale: pulseScale }] }
+        ]}
+      >
+        <Animated.View style={[
+          styles.ring,
+          {
+            width: size,
+            height: size,
+            borderColor: colors[0],
+            borderLeftWidth: size * 0.05,
+            borderRightWidth: size * 0.05,
+            borderTopWidth: size * 0.05,
+          },
+          getRotationStyle(ring1Rotation)
+        ]} />
+        
+        <Animated.View style={[
+          styles.ring,
+          {
+            width: size * 0.85,
+            height: size * 0.85,
+            borderColor: colors[1],
+            borderLeftWidth: size * 0.05,
+            borderRightWidth: size * 0.05,
+            borderBottomWidth: size * 0.05,
+          },
+          getRotationStyle(ring2Rotation)
+        ]} />
+        
+        <Animated.View style={[
+          styles.ring,
+          {
+            width: size * 0.7,
+            height: size * 0.7,
+            borderColor: colors[2],
+            borderLeftWidth: size * 0.05,
+            borderRightWidth: size * 0.05,
+            borderTopWidth: size * 0.05,
+          },
+          getRotationStyle(ring3Rotation)
+        ]} />
+      </Animated.View>
+
+      {showMessage && (
+        <Animated.Text style={[
+          styles.loadingText,
+          { 
+            opacity: textOpacity,
+            color: colors[0]  // Use the base type color for text
+          }
+        ]}>
+          {message}
+        </Animated.Text>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  spinnerContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   ring: {
     position: 'absolute',
-    borderRadius: 100,
+    borderRadius: 1000,
     borderStyle: 'solid',
     borderWidth: 0,
+  },
+  loadingText: {
+    marginTop: 20,
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 
