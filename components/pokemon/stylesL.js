@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
   },
   pokemonId: {
     fontSize: 14,
-    color: '#666',
+    color: '#0000000',
   },
   pokemonName: {
     fontSize: 20,
@@ -60,12 +60,16 @@ export const styles = StyleSheet.create({
   typeContainer: {
     flexDirection: 'row',
     gap: 5,
+    marginTop: 5,
   },
   typeBox: {
+    flexDirection:'row',
+    alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 20,
     marginRight: 5,
+    gap: 4,
   },
   typeText: {
     color: 'white',
@@ -80,30 +84,28 @@ export const styles = StyleSheet.create({
   emptyContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     paddingVertical: 20,
+    marginTop: 90,
   },
   emptyText: {
-    fontSize: 18,
+    fontSize: 30,
     fontWeight: 'bold',
     color: '#666',
     marginBottom: 8,
   },
   emptySubText: {
-    fontSize: 14,
+    fontSize: 18,
     color: '#999',
   },
   emptyList: {
     flexGrow: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
 
   //Icon styles
   typeIcon: {
-    width: 70,    // reduced width
-    height: 70,   // reduced height
-    position: 'absolute',
-    top: 8,
-    right: 8
+    width: 15,    // reduced width
+    height: 15,   // reduced height
   },
 });

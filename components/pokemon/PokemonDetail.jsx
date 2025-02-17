@@ -338,7 +338,7 @@ export default function PokemonDetail() {
               source={getTypeIcon(mainType)}
               style={[
                 styles.detailTypeIcon,
-                { tintColor: darkenColor(typeColor, 0.3) }
+                { tintColor: darkenColor(typeColor, 0.2) }
               ]}
             />
           )}

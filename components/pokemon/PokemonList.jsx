@@ -12,6 +12,7 @@ import { router } from 'expo-router';
 import { styles } from './stylesL';
 import { lightenColor, darkenColor } from './colorUtils';
 import { getTypeIcon } from './typeIcons';
+import SearchBar from './SearchBar';
 
 const ITEMS_PER_PAGE = 50;
 const API_URL = 'https://pokeapi.co/api/v2/pokemon';
@@ -153,37 +154,34 @@ export default function PokemonList() {
     
     return (
       <TouchableOpacity 
-        style={[styles.card, { backgroundColor: cardBackground }]}
-        onPress={() => router.push(`/${item.id}`)}
-      >
-        <Image
-          source={{ uri: item.image }}
-          style={styles.pokemonImage}
-        />
-        <View style={styles.pokemonInfo}>
-          <Text style={styles.pokemonId}>#{item.id.toString().padStart(3, '0')}</Text>
-          <Text style={styles.pokemonName}>
-            {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
-          </Text>
-          {/* Place the type icon on the right */}
-          {typeIcon && (
-            <Image
-              source={typeIcon}
-              style={[styles.typeIcon, { tintColor: darkTypeColor }]}
-            />
-          )}
-          <View style={styles.typeContainer}>
-            {item.types.map((type, index) => (
-              <View 
-                key={index} 
-                style={[styles.typeBox, { backgroundColor: getTypeColor(type) }]}
-              >
-                <Text style={styles.typeText}>{type}</Text>
-              </View>
-            ))}
-          </View>
+      style={[styles.card, { backgroundColor: cardBackground }]}
+      onPress={() => router.push(`/${item.id}`)}
+    >
+      <Image
+        source={{ uri: item.image }}
+        style={styles.pokemonImage}
+      />
+      <View style={styles.pokemonInfo}>
+        <Text style={styles.pokemonId}>#{item.id.toString().padStart(3, '0')}</Text>
+        <Text style={styles.pokemonName}>
+          {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+        </Text>
+        <View style={styles.typeContainer}>
+          {item.types.map((type, index) => (
+            <View 
+              key={index} 
+              style={[styles.typeBox, { backgroundColor: getTypeColor(type) }]}
+            >
+              <Image
+                source={getTypeIcon(type)}
+                style={[styles.typeIcon, { tintColor: '#FFFFFF' }]}
+              />
+              <Text style={styles.typeText}>{type.charAt(0).toUpperCase() + type.slice(1)}</Text>
+            </View>
+          ))}
         </View>
-      </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
     );
   };
   
@@ -209,13 +207,11 @@ export default function PokemonList() {
 
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Search Pokémon"
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        onSubmitEditing={handleSearch}  // Add this to handle enter/submit
-        returnKeyType="search"  // Changes the return key to show 'search'
+      <SearchBar 
+        searchQuery={searchQuery} 
+        setSearchQuery={setSearchQuery} 
+        handleSearch={handleSearch} 
+        hasResults={displayedPokemon.length > 0}
       />
       <FlatList
         data={displayedPokemon}
