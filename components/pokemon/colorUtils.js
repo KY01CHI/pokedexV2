@@ -14,6 +14,10 @@ export const darkenColor = (hex, amount = 0.2) => {
     const newColor = (r << 16) | (g << 8) | b;
     return (usePound ? "#" : "") + newColor.toString(16).padStart(6, "0");
   };
+
+  export const getContrastTextColor = (baseColor, amount = 0.6) => {
+    return darkenColor(baseColor, amount);
+  };
   
   export const getTypeColor = (type) => {
     const colors = {
@@ -55,4 +59,6 @@ export const darkenColor = (hex, amount = 0.2) => {
     const newColor = (r << 16) | (g << 8) | b;
     return (usePound ? "#" : "") + newColor.toString(16).padStart(6, '0');
   };
+
+  
   

@@ -16,12 +16,18 @@ import styles from './stylesD';
 import MoveColor from './MoveColor'
 import StatBar from './StatBar';
 import { getTypeIcon } from './typeIcons';
-import { darkenColor, getTypeColor } from './colorUtils';
 import LoadingSpinner from './LoadingSpinner';
 import EvolutionDetails from './EvolutionDetails';
+import { GenerationIcon, THEMED_GENERATION_ICONS } from './generationIcons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { darkenColor, getTypeColor, lightenColor,getContrastTextColor } from './colorUtils';
 
 const { width } = Dimensions.get('window');
 
+const formatGeneration = (gen) => {
+  if (!gen) return '';
+  return "Generation " + gen.split('-')[1].toUpperCase();
+};
 
 export default function PokemonDetail() {
   const [pokemon, setPokemon] = useState(null);
@@ -30,6 +36,7 @@ export default function PokemonDetail() {
   const [locationAreas, setLocationAreas] = useState([]);
   const [evolutionChain, setEvolutionChain] = useState(null);
   const [species, setSpecies] = useState(null);
+  const [generation, setGeneration] = useState(null);
 
   const { id } = useLocalSearchParams();
   const router = useRouter();
@@ -50,6 +57,7 @@ export default function PokemonDetail() {
       const speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
       const speciesData = await speciesResponse.json();
       setSpecies(speciesData);
+      setGeneration(formatGeneration(speciesData.generation.name));
       
       // Extract evolution chain ID and fetch it
       const evolutionId = speciesData.evolution_chain.url.split('/').slice(-2)[0];
@@ -160,57 +168,169 @@ export default function PokemonDetail() {
 
   const renderAboutTab = () => (
     <ScrollView style={styles.tabContent}>
-      <View style={styles.aboutContainer}>
+    <View style={styles.aboutGridContainer}>
+      {/* Row 1 */}
+      <View style={styles.aboutRow}>
         {/* Weight */}
-        <View style={styles.aboutItem}>
+        <LinearGradient
+          colors={[
+            getTypeColor(pokemon.types[0].type.name),
+            darkenColor(getTypeColor(pokemon.types[0].type.name), 0.3)
+          ]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={[styles.aboutGridItem, { backgroundColor: 'transparent' }]}
+        >
           <View style={styles.aboutValueContainer}>
-            <Ionicons name="scale-outline" size={18} color="#666" style={styles.aboutIcon} />
-            <Text style={styles.aboutValue}>{pokemon.weight / 10} kg</Text>
+            <Ionicons 
+              name="scale-outline" 
+              size={18} 
+              color="white"
+              style={styles.aboutIcon} 
+            />
+            <Text style={[styles.aboutValue, { 
+              color: 'white',
+              fontWeight: 'bold',
+              textShadowColor: 'rgba(255, 255, 255, 0.5)',
+              textShadowOffset: { width: 0, height: 1 },
+              textShadowRadius: 2
+            }]}>
+              {pokemon.weight / 10} kg
+            </Text>
           </View>
-          <Text style={styles.aboutLabel}>Weight</Text>
-        </View>
-        
-        <View style={styles.divider} />
+          <Text style={[styles.aboutLabel, { 
+            color: 'white',
+            fontWeight: '600'
+          }]}>
+            Weight
+          </Text>
+        </LinearGradient>
         
         {/* Height */}
-        <View style={styles.aboutItem}>
+        <LinearGradient
+          colors={[
+            getTypeColor(pokemon.types[0].type.name),
+            darkenColor(getTypeColor(pokemon.types[0].type.name), 0.3)
+          ]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={[styles.aboutGridItem, { backgroundColor: 'transparent' }]}
+        >
           <View style={styles.aboutValueContainer}>
-            <Ionicons name="resize-outline" size={18} color="#666" style={styles.aboutIcon} />
-            <Text style={styles.aboutValue}>{pokemon.height / 10} m</Text>
+            <Ionicons 
+              name="resize-outline" 
+              size={18} 
+              color="white"
+              style={styles.aboutIcon} 
+            />
+            <Text style={[styles.aboutValue, { 
+              color: 'white',
+              fontWeight: 'bold',
+              textShadowColor: 'rgba(255, 255, 255, 0.5)',
+              textShadowOffset: { width: 0, height: 1 },
+              textShadowRadius: 2
+            }]}>
+              {pokemon.height / 10} m
+            </Text>
           </View>
-          <Text style={styles.aboutLabel}>Height</Text>
-        </View>
-        
-        <View style={styles.divider} />
-        
+          <Text style={[styles.aboutLabel, { 
+            color: 'white',
+            fontWeight: '600'
+          }]}>
+            Height
+          </Text>
+        </LinearGradient>
+      </View>
+
+      {/* Row 2 */}
+      <View style={styles.aboutRow}>
+        {/* Generation */}
+        <LinearGradient
+          colors={[
+            getTypeColor(pokemon.types[0].type.name),
+            darkenColor(getTypeColor(pokemon.types[0].type.name), 0.3)
+          ]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={[styles.aboutGridItem, { backgroundColor: 'transparent' }]}
+        >
+          <View style={[styles.aboutValueContainer, { flexDirection: 'column', gap: 4 }]}>
+            <GenerationIcon 
+              generation={species?.generation?.name} 
+              size={18}
+              style={{ tintColor: darkenColor(getTypeColor(pokemon.types[0].type.name), 0.5) }}
+            />
+            <Text style={[styles.aboutValue, { 
+              color: 'white',
+              fontWeight: 'bold',
+              textShadowColor: 'rgba(255, 255, 255, 0.5)',
+              textShadowOffset: { width: 0, height: 1 },
+              textShadowRadius: 2
+            }]}>
+              {generation}
+            </Text>
+          </View>
+          <Text style={[styles.aboutLabel, { 
+            color: 'white',
+            fontWeight: '600'
+          }]}>
+            {THEMED_GENERATION_ICONS[species?.generation?.name]?.label || 'Generation'}
+          </Text>
+        </LinearGradient>
+
         {/* Abilities */}
-        <View style={styles.aboutItem}>
+        <LinearGradient
+          colors={[
+            getTypeColor(pokemon.types[0].type.name),
+            darkenColor(getTypeColor(pokemon.types[0].type.name), 0.3)
+          ]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={[styles.aboutGridItem, { backgroundColor: 'transparent' }]}
+        >
           <View style={styles.aboutValueContainer}>
-            <Ionicons name="flash-outline" size={18} color="#666" style={styles.abilityIcon} />
+            <Ionicons 
+              name="flash-outline" 
+              size={18} 
+              color="white"
+              style={styles.abilityIcon} 
+            />
             <View style={styles.abilitiesContainer}>
               {pokemon.abilities.map((a, index) => (
-                <Text key={index} style={styles.abilityText}>
+                <Text key={index} style={[styles.abilityText, { 
+                  color: 'white',
+                  fontWeight: 'bold',
+                  textShadowColor: 'rgba(255, 255, 255, 0.5)',
+                  textShadowOffset: { width: 0, height: 1 },
+                  textShadowRadius: 2
+                }]}>
                   {a.ability.name.charAt(0).toUpperCase() + a.ability.name.slice(1)}
                 </Text>
               ))}
             </View>
           </View>
-          <Text style={styles.aboutLabel}>Abilities</Text>
-        </View>
+          <Text style={[styles.aboutLabel, { 
+            color: 'white',
+            fontWeight: '600'
+          }]}>
+            Abilities
+          </Text>
+        </LinearGradient>
       </View>
-  
-      {/* Description Section with updated View wrapper */}
-      <View style={styles.descriptionContainer}>
-        <Text style={styles.sectionHeader}>Description</Text>
-        <View style={styles.descriptionTextContainer}>
-          {species && (
-            <Text style={styles.description}>
-              {species.flavor_text_entries.find(entry => entry.language.name === 'en')?.flavor_text.replace(/\f/g, ' ')}
-            </Text>
-          )}
-        </View>
+    </View>
+    
+    {/* Description section remains the same */}
+    <View style={styles.descriptionContainer}>
+      <Text style={styles.sectionHeader}>Description</Text>
+      <View style={styles.descriptionTextContainer}>
+        {species && (
+          <Text style={styles.description}>
+            {species.flavor_text_entries.find(entry => entry.language.name === 'en')?.flavor_text.replace(/\f/g, ' ')}
+          </Text>
+        )}
       </View>
-    </ScrollView>
+    </View>
+  </ScrollView>
   );
 
   const renderStatsTab = (animate) => (
@@ -227,8 +347,6 @@ export default function PokemonDetail() {
       ))}
     </View>
   );
-  
-  
   
   const renderLocationTab = () => (
     <View style={styles.tabContent}>
@@ -247,7 +365,6 @@ export default function PokemonDetail() {
   );
 
   const renderMovesTab = () => {
-    // Filter moves: include only moves learned via 'level-up'
     const learnedMoves = pokemon.moves
       .filter(moveItem =>
         moveItem.version_group_details.some(
@@ -255,17 +372,14 @@ export default function PokemonDetail() {
         )
       )
       .map(moveItem => {
-        // Extract all level values from the level-up method (ignoring any 0s)
         const levels = moveItem.version_group_details
           .filter(detail => detail.move_learn_method.name === 'level-up')
           .map(detail => detail.level_learned_at)
           .filter(level => level > 0);
-        // Use the minimum level (or 0 if no valid level found)
         const learnLevel = levels.length > 0 ? Math.min(...levels) : 0;
         return { ...moveItem, learnLevel };
       });
   
-    // Sort moves by learnLevel (ascending order)
     learnedMoves.sort((a, b) => a.learnLevel - b.learnLevel);
   
     return (
@@ -276,7 +390,6 @@ export default function PokemonDetail() {
       </ScrollView>
     );
   };
-  
 
   if (loading) {
     return (
@@ -328,7 +441,6 @@ export default function PokemonDetail() {
           />
       </View>
 
-      
       <View style={styles.contentContainer}>
           <View style={styles.typesContainer}>
             {pokemon.types.map((type) => (
@@ -368,4 +480,3 @@ export default function PokemonDetail() {
     </View>
   );
 }
-

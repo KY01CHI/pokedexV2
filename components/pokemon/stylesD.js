@@ -80,18 +80,38 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+    padding: 16,
+    gap: 8,
   },
   aboutItem: {
+    width: '48%',
     alignItems: 'center',
-    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+  },
+  aboutGridContainer: {
+    padding: 16,
+  },
+  aboutRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  aboutGridItem: {
+    width: '48%', 
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    overflow: 'hidden',
   },
   aboutValueContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5,
+    justifyContent: 'center',
+    marginBottom: 8,
   },
   aboutIcon: {
-    marginRight: 5,
+    marginRight: 8,
   },
   abilityIcon: {
     alignSelf: 'center',
@@ -100,22 +120,24 @@ const styles = StyleSheet.create({
   aboutValue: {
     fontSize: 16,
     fontWeight: '600',
+    color: '#333',
   },
   aboutLabel: {
-    fontSize: 12,
-    color: '#888',
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
   },
   abilitiesContainer: {
     alignItems: 'center',
   },
   abilityText: {
     fontSize: 14,
+    color: '333',
     textAlign: 'center',
+    marginVertical: 2,
   },
   divider: {
-    width: 1,
-    height: 40,
-    backgroundColor: '#e0e0e0',
+    display: 'none',
   },
   statRow: {
     flexDirection: 'row',
