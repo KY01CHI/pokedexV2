@@ -342,6 +342,34 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 12
   },
+  regionContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    marginVertical: 10,
+  },  
+  centerContainer: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 5,
+  },
+  infoText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  iconStyle: {
+    marginRight: 5, // spacing between icon and text
+  },
+  
 });
 
 export default styles;

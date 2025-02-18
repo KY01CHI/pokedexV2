@@ -172,14 +172,11 @@ export default function PokemonDetail() {
       {/* Row 1 */}
       <View style={styles.aboutRow}>
         {/* Weight */}
-        <LinearGradient
-          colors={[
-            getTypeColor(pokemon.types[0].type.name),
-            darkenColor(getTypeColor(pokemon.types[0].type.name), 0.3)
+        <View
+          style={[
+            styles.aboutGridItem, 
+            { backgroundColor: getTypeColor(pokemon.types[0].type.name) }
           ]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={[styles.aboutGridItem, { backgroundColor: 'transparent' }]}
         >
           <View style={styles.aboutValueContainer}>
             <Ionicons 
@@ -198,23 +195,27 @@ export default function PokemonDetail() {
               {pokemon.weight / 10} kg
             </Text>
           </View>
-          <Text style={[styles.aboutLabel, { 
-            color: 'white',
-            fontWeight: '600'
-          }]}>
-            Weight
-          </Text>
-        </LinearGradient>
+          <View style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            paddingHorizontal: 8,
+            paddingVertical: 4,
+            borderRadius: 12
+          }}>
+            <Text style={[styles.aboutLabel, { 
+              color: 'white',
+              fontWeight: '600'
+            }]}>
+              Weight
+            </Text>
+          </View>
+        </View>
         
         {/* Height */}
-        <LinearGradient
-          colors={[
-            getTypeColor(pokemon.types[0].type.name),
-            darkenColor(getTypeColor(pokemon.types[0].type.name), 0.3)
+        <View
+          style={[
+            styles.aboutGridItem, 
+            { backgroundColor: getTypeColor(pokemon.types[0].type.name) }
           ]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={[styles.aboutGridItem, { backgroundColor: 'transparent' }]}
         >
           <View style={styles.aboutValueContainer}>
             <Ionicons 
@@ -233,60 +234,76 @@ export default function PokemonDetail() {
               {pokemon.height / 10} m
             </Text>
           </View>
-          <Text style={[styles.aboutLabel, { 
-            color: 'white',
-            fontWeight: '600'
-          }]}>
-            Height
-          </Text>
-        </LinearGradient>
+          <View style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            paddingHorizontal: 8,
+            paddingVertical: 4,
+            borderRadius: 12
+          }}>
+            <Text style={[styles.aboutLabel, { 
+              color: 'white',
+              fontWeight: '600'
+            }]}>
+              Height
+            </Text>
+          </View>
+        </View>
       </View>
 
       {/* Row 2 */}
       <View style={styles.aboutRow}>
         {/* Generation */}
-        <LinearGradient
-          colors={[
-            getTypeColor(pokemon.types[0].type.name),
-            darkenColor(getTypeColor(pokemon.types[0].type.name), 0.3)
+        <View
+          style={[
+            styles.aboutGridItem, 
+            { backgroundColor: getTypeColor(pokemon.types[0].type.name) }
           ]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={[styles.aboutGridItem, { backgroundColor: 'transparent' }]}
         >
           <View style={[styles.aboutValueContainer, { flexDirection: 'column', gap: 4 }]}>
-            <GenerationIcon 
-              generation={species?.generation?.name} 
-              size={18}
-              style={{ tintColor: darkenColor(getTypeColor(pokemon.types[0].type.name), 0.5) }}
-            />
-            <Text style={[styles.aboutValue, { 
-              color: 'white',
-              fontWeight: 'bold',
-              textShadowColor: 'rgba(255, 255, 255, 0.5)',
-              textShadowOffset: { width: 0, height: 1 },
-              textShadowRadius: 2
-            }]}>
-              {generation}
-            </Text>
+            <View>
+              <Text style={[styles.aboutValue, { 
+                color: 'white',
+                fontWeight: 'bold',
+                textShadowColor: 'rgba(255, 255, 255, 0.5)',
+                textShadowOffset: { width: 0, height: 1 },
+                textShadowRadius: 2
+              }]}>
+                {generation}
+              </Text>
+            </View>
           </View>
-          <Text style={[styles.aboutLabel, { 
-            color: 'white',
-            fontWeight: '600'
-          }]}>
-            {THEMED_GENERATION_ICONS[species?.generation?.name]?.label || 'Generation'}
-          </Text>
-        </LinearGradient>
+          <View style={styles.centerContainer}>
+            <View style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              paddingHorizontal: 8,
+              paddingVertical: 4,
+              borderRadius: 16
+            }}>
+              <View style={styles.infoRow}>
+                <GenerationIcon
+                  generation={species?.generation?.name}
+                  size={15}
+                  style={[
+                    {
+                      tintColor: darkenColor(getTypeColor(pokemon.types[0].type.name), 0.5),
+                    },
+                    styles.iconStyle,
+                  ]}
+                />
+                <Text style={styles.infoText}>
+                  {THEMED_GENERATION_ICONS[species?.generation?.name]?.label || 'Generation'}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
 
         {/* Abilities */}
-        <LinearGradient
-          colors={[
-            getTypeColor(pokemon.types[0].type.name),
-            darkenColor(getTypeColor(pokemon.types[0].type.name), 0.3)
+        <View
+          style={[
+            styles.aboutGridItem, 
+            { backgroundColor: getTypeColor(pokemon.types[0].type.name) }
           ]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={[styles.aboutGridItem, { backgroundColor: 'transparent' }]}
         >
           <View style={styles.aboutValueContainer}>
             <Ionicons 
@@ -309,15 +326,22 @@ export default function PokemonDetail() {
               ))}
             </View>
           </View>
-          <Text style={[styles.aboutLabel, { 
-            color: 'white',
-            fontWeight: '600'
-          }]}>
-            Abilities
-          </Text>
-        </LinearGradient>
+          <View style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            paddingHorizontal: 8,
+            paddingVertical: 4,
+            borderRadius: 12
+          }}>
+            <Text style={[styles.aboutLabel, { 
+              color: 'white',
+              fontWeight: '600'
+            }]}>
+              Abilities
+            </Text>
+          </View>
+        </View>
       </View>
-    </View>
+      </View>
     
     {/* Description section remains the same */}
     <View style={styles.descriptionContainer}>
