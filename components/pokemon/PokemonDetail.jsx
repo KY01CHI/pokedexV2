@@ -19,8 +19,8 @@ import { getTypeIcon } from './typeIcons';
 import LoadingSpinner from './LoadingSpinner';
 import EvolutionDetails from './EvolutionDetails';
 import { GenerationIcon, THEMED_GENERATION_ICONS } from './generationIcons';
-import { LinearGradient } from 'expo-linear-gradient';
-import { darkenColor, getTypeColor, lightenColor,getContrastTextColor } from './colorUtils';
+import { darkenColor, getTypeColor, } from './colorUtils';
+import LocationItem from './LocationItem';
 
 const { width } = Dimensions.get('window');
 
@@ -175,7 +175,7 @@ export default function PokemonDetail() {
         <View
           style={[
             styles.aboutGridItem, 
-            { backgroundColor: getTypeColor(pokemon.types[0].type.name) }
+            { backgroundColor: darkenColor(typeColor, 0.2) }
           ]}
         >
           <View style={styles.aboutValueContainer}>
@@ -214,7 +214,7 @@ export default function PokemonDetail() {
         <View
           style={[
             styles.aboutGridItem, 
-            { backgroundColor: getTypeColor(pokemon.types[0].type.name) }
+            { backgroundColor: darkenColor(typeColor, 0.2) }
           ]}
         >
           <View style={styles.aboutValueContainer}>
@@ -256,7 +256,7 @@ export default function PokemonDetail() {
         <View
           style={[
             styles.aboutGridItem, 
-            { backgroundColor: getTypeColor(pokemon.types[0].type.name) }
+            { backgroundColor: darkenColor(typeColor, 0.2) }
           ]}
         >
           <View style={[styles.aboutValueContainer, { flexDirection: 'column', gap: 4 }]}>
@@ -302,7 +302,7 @@ export default function PokemonDetail() {
         <View
           style={[
             styles.aboutGridItem, 
-            { backgroundColor: getTypeColor(pokemon.types[0].type.name) }
+            { backgroundColor: darkenColor(typeColor, 0.2) }
           ]}
         >
           <View style={styles.aboutValueContainer}>
@@ -376,11 +376,11 @@ export default function PokemonDetail() {
     <View style={styles.tabContent}>
       {locationAreas.length > 0 ? (
         locationAreas.map((location, index) => (
-          <View key={index} style={styles.locationItem}>
-            <Text style={styles.locationName}>
-              {location.location_area.name.replace(/-/g, ' ')}
-            </Text>
-          </View>
+          <LocationItem 
+            key={index}
+            locationArea={location}
+            mainType={pokemon.types[0].type.name}
+          />
         ))
       ) : (
         <Text style={styles.noDataText}>No location data available</Text>

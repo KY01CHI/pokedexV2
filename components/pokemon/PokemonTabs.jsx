@@ -13,10 +13,6 @@ const { width } = Dimensions.get('window');
 const TAB_WIDTH = width / 4;
 
 export default function PokemonTabs({ 
-  pokemon, 
-  species, 
-  evolutionChain, 
-  locationAreas, 
   renderAboutTab, 
   renderStatsTab, 
   renderEvolutionTab, 
