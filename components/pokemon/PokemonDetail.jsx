@@ -188,9 +188,6 @@ export default function PokemonDetail() {
             <Text style={[styles.aboutValue, { 
               color: 'white',
               fontWeight: 'bold',
-              textShadowColor: 'rgba(255, 255, 255, 0.5)',
-              textShadowOffset: { width: 0, height: 1 },
-              textShadowRadius: 2
             }]}>
               {pokemon.weight / 10} kg
             </Text>
@@ -227,9 +224,6 @@ export default function PokemonDetail() {
             <Text style={[styles.aboutValue, { 
               color: 'white',
               fontWeight: 'bold',
-              textShadowColor: 'rgba(255, 255, 255, 0.5)',
-              textShadowOffset: { width: 0, height: 1 },
-              textShadowRadius: 2
             }]}>
               {pokemon.height / 10} m
             </Text>
@@ -264,9 +258,6 @@ export default function PokemonDetail() {
               <Text style={[styles.aboutValue, { 
                 color: 'white',
                 fontWeight: 'bold',
-                textShadowColor: 'rgba(255, 255, 255, 0.5)',
-                textShadowOffset: { width: 0, height: 1 },
-                textShadowRadius: 2
               }]}>
                 {generation}
               </Text>
@@ -317,9 +308,6 @@ export default function PokemonDetail() {
                 <Text key={index} style={[styles.abilityText, { 
                   color: 'white',
                   fontWeight: 'bold',
-                  textShadowColor: 'rgba(255, 255, 255, 0.5)',
-                  textShadowOffset: { width: 0, height: 1 },
-                  textShadowRadius: 2
                 }]}>
                   {a.ability.name.charAt(0).toUpperCase() + a.ability.name.slice(1)}
                 </Text>
