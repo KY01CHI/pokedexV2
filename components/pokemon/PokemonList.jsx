@@ -57,6 +57,7 @@ export default function PokemonList() {
             type="normal"
             message="Searching Pokémon..."
             showMessage={true}
+            fullScreen={true}
           />
         </View>
       );

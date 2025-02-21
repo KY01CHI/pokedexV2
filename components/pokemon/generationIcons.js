@@ -9,8 +9,8 @@ export const THEMED_GENERATION_ICONS = {
     label: 'Kanto'
   },
   'generation-ii': {
-    icon: 'time-outline',
-    type: 'ionicon',
+    icon: 'feather',
+    type: 'material',
     color: 'white',
     label: 'Johto'
   },
@@ -45,15 +45,15 @@ export const THEMED_GENERATION_ICONS = {
     label: 'Alola'
   },
   'generation-viii': {
-    icon: 'shield-sword-outline',
+    icon: 'shield-sword',
     type: 'material',
     color: 'white',
     label: 'Galar'
   },
   'generation-ix': {
-    icon: 'infinite-outline',
-    type: 'ionicon',
-    ccolor: 'white',
+    icon: 'compass-outline',
+    type: 'ionic',
+    color: 'white',
     label: 'Paldea'
   }
 };

@@ -4,11 +4,12 @@ import { getTypeColor, lightenColor } from './colorUtils';
 
 const LoadingSpinner = ({ 
   size = 100,
-  type = 'normal', // Default to normal type
+  type = 'normal',
   message = 'Loading...',
   showMessage = true,
   pulseEffect = true,
-  rotationDuration = 1200
+  rotationDuration = 1200,
+  fullScreen = false // New prop to control full screen mode
 }) => {
   // Animations for rings
   const ring1Rotation = useRef(new Animated.Value(0)).current;
@@ -28,6 +29,9 @@ const LoadingSpinner = ({
     lightenColor(baseColor, 0.2),
     lightenColor(baseColor, 0.4)
   ];
+  
+  // Calculate background color - very light version of the type color
+  const bgColor = lightenColor(baseColor, 0.8);
 
   useEffect(() => {
     // Ring rotation animations
@@ -114,8 +118,8 @@ const LoadingSpinner = ({
     ],
   });
 
-  return (
-    <View style={styles.container}>
+  const spinnerContent = (
+    <>
       <Animated.View 
         style={[
           styles.spinnerContainer, 
@@ -168,20 +172,51 @@ const LoadingSpinner = ({
           styles.loadingText,
           { 
             opacity: textOpacity,
-            color: colors[0]  // Use the base type color for text
+            color: colors[0],
+            marginTop: size * 0.2
           }
         ]}>
           {message}
         </Animated.Text>
       )}
+    </>
+  );
+
+  // Render different container based on fullScreen prop
+  if (fullScreen) {
+    return (
+      <View style={[
+        styles.fullScreenContainer,
+        { backgroundColor: bgColor }
+      ]}>
+        {spinnerContent}
+      </View>
+    );
+  }
+
+  return (
+    <View style={[
+      styles.container,
+      { backgroundColor: bgColor }
+    ]}>
+      {spinnerContent}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  fullScreenContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+  },
   container: {
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
+    borderRadius: 16,
   },
   spinnerContainer: {
     justifyContent: 'center',
@@ -194,7 +229,6 @@ const styles = StyleSheet.create({
     borderWidth: 0,
   },
   loadingText: {
-    marginTop: 20,
     fontSize: 16,
     fontWeight: '600',
   },

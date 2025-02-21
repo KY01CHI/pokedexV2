@@ -6,7 +6,7 @@ const LoadingScreen = () => {
     <View style={styles.container}>
       {/* Splash Screen Pokemon Logo */}
       <Image
-        source={require('../assets/pokedex-logo.png')}
+        source={require('../assets/Dex.png')}
         style={styles.logo}
         resizeMode="contain" // Maintains image aspect ratio
       />
